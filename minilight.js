@@ -4,7 +4,7 @@
 	Flexible in terms of operation.
 
 	For instructions on Operation, check README.md.
-	Meant to be used in conjunction with minilight-min.css.
+	Meant to be used in conjunction with minilight-sty-min.css.
 */
 
 // Main function to highlight syntax.
