@@ -14,8 +14,7 @@ function highlight(code){
 		strReg = /^["'`]$/m,							// Strings Regex
 		decReg = /^let|const|var|for|while|if|else|in$/,		// Declarations Regex
 		others = /^console|Error|try|catch|Math|Object|function|log$/,	// The final highlight
-		opeReg = /^default|delete|typeof$/,
-		final = ``;
+		opeReg = /^default|delete|typeof|string$/
 
 	// First step.
 	// Finding out the strings inside the Code.
@@ -47,124 +46,163 @@ function highlight(code){
 	}
 
 	for (let char = 0; char < code.length; char++){
-		if(inStr.bool === false)
-		{
-			// If we are not inside a string and not inside a comment.
 
-			if(strReg.test(code[char])){
-				// If the char is a string delimeter.
-				inStr.bool = true;	// We are in a string now.
-				inStr.delim = code[char];
-				highlighted += `<span class='quotes'>${code[char]}</span>`;
+		if(inComment.bool === false){
+
+			// Checking for a comment initializer.
+
+			if(code[char] === '/' && (code[char + 1]==='/' || code[char + 1]==='*')){
+				console.log('Comment : ',code[char],code[char+1]);
+
+				inComment.bool = true;
+				inComment.delim = code[char+1];
+				highlighted += "<span class='comment'>" + code[char].toString();
+				continue;	// Skip to next iteration.
 			}
-			else{
-				// Finding keywords and comments in the code given we are not inside a string.
 
-				if(current.inWord === false){
+			if(inStr.bool === false)
+			{
+				// If we are not inside a string and not inside a comment.
 
-					// If we are not inside a word.
-
-					if(alphaReg.test(code[char])){	// Identifiers cannot start with numbers.
-						// Setting the state current.inWord to true.
-
-						current.inWord = true;
-						current.word += code[char].toString();
-					}
-					else{
-						
-						// Highlighting if it is a number or a symbol.
-
-						if(numReg.test(code[char])){
-
-							if(char === 0)
-								highlighted += `<span class='number'>${code[char]}</span>`
-							else{
-								// Checking if the number is not a part of a variable name.
-
-								if(char > 0 && !alphaReg.test(code[char - 1])) 
-									highlighted += `<span class='number'>${code[char]}</span>`;
-								else 
-									highlighted += code[char].toString();
-							}
-						}
-						else if(symReg.test(code[char])){
-							highlighted += `<span class='symbol'>${code[char]}</span>`
-						}
-						else{
-							highlighted += code[char].toString();
-						}
-					}
+				if(strReg.test(code[char])){
+					// If the char is a string delimeter.
+					inStr.bool = true;	// We are in a string now.
+					inStr.delim = code[char];
+					highlighted += `<span class='quotes'>${code[char]}</span>`;
 				}
 				else{
-					// Otherwise we are inside a word.
+					// Finding keywords and comments in the code given we are not inside a string.
 
-					if(alphaReg.test(code[char]) || numReg.test(code[char]) || /_/.test(highlighted[char])){
-						current.word += code[char].toString();
-					}
-					else{
-						// If the word has ended I.E : A space or a symbol or an invalid identifier.
+					if(current.inWord === false){
 
-						current.inWord = false; // No longer inside a word.
+						// If we are not inside a word.
 
-						// Now evaluating if the word we have with us is a keyword.
+						if(alphaReg.test(code[char])){	// Identifiers cannot start with numbers.
+							// Setting the state current.inWord to true.
 
-						if(decReg.test(current.word)){
-							highlighted += `<span class='declerator'>${current.word}</span>`;
-						}
-						else if(others.test(current.word)){
-							highlighted += `<span class='othkeywords'>${current.word}</span>`	
-						}
-						else if(opeReg.test(current.word)){
-							highlighted += `<span class='operator'>${current.word}</span>`;
+							current.inWord = true;
+							current.word += code[char].toString();
 						}
 						else{
-							highlighted += `${current.word}`;
-						}
+							
+							// Highlighting if it is a number or a symbol.
 
-						// Setting current.word to empty.
+							if(numReg.test(code[char])){
 
-						current.word = ``;
+								if(char === 0)
+									highlighted += `<span class='number'>${code[char]}</span>`
+								else{
+									// Checking if the number is not a part of a variable name.
 
-						// Adding the character that comes after the word, that we are currently at.
-						// Highlighting if it is a number or a symbol.
-
-						if(numReg.test(code[char])){
-							if(code === 0)
-								highlighted += `<span class='number'>${code[char]}</span>`
+									if(char > 0 && !alphaReg.test(code[char - 1])) 
+										highlighted += `<span class='number'>${code[char]}</span>`;
+									else 
+										highlighted += code[char].toString();
+								}
+							}
+							else if(symReg.test(code[char])){
+								highlighted += `<span class='symbol'>${code[char]}</span>`
+							}
 							else{
-								// Checking if the number is not a part of a variable name.
-
-								if(char > 0 && !alphaReg.test(code[char - 1])) 
-									highlighted += `<span class='number'>${code[char]}</span>`;
-								else 
-									highlighted += code[char].toString();
+								highlighted += code[char].toString();
 							}
 						}
-						else if(symReg.test(code[char])){
-							highlighted += `<span class='symbol'>${code[char]}</span>`
+					}
+					else{
+						// Otherwise we are inside a word.
+
+						if(alphaReg.test(code[char]) || numReg.test(code[char]) || /_/.test(highlighted[char])){
+							current.word += code[char].toString();
 						}
 						else{
-							highlighted += code[char].toString();
+							// If the word has ended I.E : A space or a symbol or an invalid identifier.
+
+							current.inWord = false; // No longer inside a word.
+
+							// Now evaluating if the word we have with us is a keyword.
+
+							if(decReg.test(current.word)){
+								highlighted += `<span class='declerator'>${current.word}</span>`;
+							}
+							else if(others.test(current.word)){
+								highlighted += `<span class='othkeywords'>${current.word}</span>`	
+							}
+							else if(opeReg.test(current.word)){
+								highlighted += `<span class='operator'>${current.word}</span>`;
+							}
+							else{
+								highlighted += `${current.word}`;
+							}
+
+							// Setting current.word to empty.
+
+							current.word = ``;
+
+							// Adding the character that comes after the word, that we are currently at.
+							// Highlighting if it is a number or a symbol.
+
+							if(numReg.test(code[char])){
+								if(code === 0)
+									highlighted += `<span class='number'>${code[char]}</span>`
+								else{
+									// Checking if the number is not a part of a variable name.
+
+									if(char > 0 && !alphaReg.test(code[char - 1])) 
+										highlighted += `<span class='number'>${code[char]}</span>`;
+									else 
+										highlighted += code[char].toString();
+								}
+							}
+							else if(symReg.test(code[char])){
+								highlighted += `<span class='symbol'>${code[char]}</span>`
+							}
+							else{
+								highlighted += code[char].toString();
+							}
 						}
 					}
 				}
 			}
-		}
-		else{
-			// If we are inside a string.
-
-			if(code[char] === inStr.delim){
-				inStr.bool = false;		// No longer in a string.
-
-				highlighted += `<span class='string'>${inStr.newstr}</span><span class='quotes'>${inStr.delim}</span>`;
-
-				inStr.newstr = ``;
-			}
 			else{
-				inStr.newstr += code[char].toString();
+				// If we are inside a string.
+
+				if(code[char] === inStr.delim){
+					inStr.bool = false;		// No longer in a string.
+
+					highlighted += `<span class='string'>${inStr.newstr}</span><span class='quotes'>${inStr.delim}</span>`;
+
+					inStr.newstr = ``;
+				}
+				else{
+					inStr.newstr += code[char].toString();
+				}
+			}
+
+		}	
+		else{
+			// If we are inside a comment.
+
+			highlighted += code[char].toString();
+
+			// Checking for a comment terminator.
+
+			if(inComment.delim === '/'){
+				if(code[char] === '\n'){
+					// End of comment.
+
+					highlighted += "</span>";
+					inComment.bool = false;
+				}
+			}
+			else if(inComment.delim === '*'){
+				if(code[char] === '/' && code[char - 1] === '*'){
+					inComment.bool = false;
+					highlighted += "</span>";
+				}
 			}
 		}
 	}
+		
 
 	return highlighted;
 }
