@@ -34,7 +34,7 @@ function highlight(code = ""){
 		numReg = /\d+/mi,						// Numbers Regex
 		symReg = /[=\/+,*.:-]+/mi,					// Symbols Regex
 		strReg = /^["'`]$/m,							// Strings Regex
-		decReg = /^let$|^const$|^var$|for$|^while$|^if$|^else$|^in$|^throw$|^new$/,		// Keyword Regex
+		decReg = /^let$|^const$|^var$|^for$|^do$|^while$|^if$|^else$|^in$|^throw$|^new$/,		// Keyword Regex
 		others = /^console$|^Error$|^try$|^catch$|^Math$|^Object$|^function$|^log$|^Error$/,	// Other Keyword Regex
 		opeReg = /^default$|^delete$|^typeof$|^string$/
 
