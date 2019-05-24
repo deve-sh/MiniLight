@@ -16,6 +16,7 @@
 	color: #ffffff;
 	padding: 1rem;
 	max-width: 100%;
+	border-radius: 0.2rem;
 }
 
 /* Keywords */
@@ -30,10 +31,16 @@
 	color : #6699cc;
 }
 
-/* Operators/Symbols and Numbers */
+/* Operators and Symbols */
 
-.operator, .symbol, .number{
+.operator, .symbol{
 	color : #f97b57;
+}
+
+/* Numbers */
+
+.number{
+	color: #f9ae57;
 }
 
 /* Quotes */

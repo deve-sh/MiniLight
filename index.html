@@ -2,44 +2,24 @@
 <html>
 <head>
 	<title>Highlighter</title>
-	<style type="text/css">
-		body{
-			background: gray;
-		}
-		.comment{
-			color: black;
-		}
-		.number{
-			color: blue;
-		}
-
-		.symbol, .operator{
-			color : green;
-		}
-
-		.keyword{
-			color: red;
-		}
-
-		.othkeywords{
-			color: darkblue;
-		}
-
-		.string{
-			color: lightgreen;
-		}
-
-		.quotes{
-			color: darkgreen;
-		}
-	</style>
+	<link rel="stylesheet" type="text/css" href="minilight.css">
 </head>
 <body>
 	<pre id='yo'>
-		<pre>
-function nodeHighlighter("yo bro",1);		</pre>
+let x = 5;
+x += 6;
+
+function specify(x){
+	x += 6;
+}
+
+for(let i = 0;i<5;i++){
+	console.log(Error(i));
+}
+
+console.log(x);
 	</pre>
-	<script type="text/javascript" src="minilight-min.js"></script>
+	<script type="text/javascript" src="index.js"></script>
 	<script type="text/javascript">
 		nodeHighlighter('#yo');
 	</script>
