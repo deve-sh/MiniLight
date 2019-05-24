@@ -35,17 +35,14 @@
 	</style>
 </head>
 <body>
-	<pre id='yo'></pre>
-	<script type="text/javascript" src="index.js"></script>
+	<pre id='yo'>
+		<pre>
+let x = 5;
+		</pre>
+	</pre>
+	<script type="text/javascript" src="minilight-min.js"></script>
 	<script type="text/javascript">
-		document.getElementById('yo').innerHTML = highlight(
-`/*
-	Comment 1.
-*/
-
-let m = 5.4;	// Comment 2
-`
-			);
+		nodeHighlighter('#yo');
 	</script>
 </body>
 </html>
