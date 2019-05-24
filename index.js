@@ -1,16 +1,25 @@
 /*
-	Main function to highlight syntax.
+	MiniLight (Mini Syntax Highlighter.)
+	Author : Devesh Kumar
+	Flexible in terms of operation.
 
-	Flexible.
+	For instructions on Operation, check README.md.
+	Meant to be used in conjunction with minilight-min.css.
 */
 
-function highlight(code){
-	code = code || ``;
+// Main function to highlight syntax.
+// Takes code as a string in its parameters.
+// Returns an HTML string with highlighted code.
+
+function highlight(code = ""){
+	if(typeof code != "string"){
+		throw new Error("Invalid type for code.");
+	}
 
 	let highlighted = ``,
 		alphaReg = /[A-Z]/i 					// Alphabets Regex
 		numReg = /\d+/mi,						// Numbers Regex
-		symReg = /[=\/+,*-]+/mi,					// Symbols Regex
+		symReg = /[=\/+,*.:-]+/mi,					// Symbols Regex
 		strReg = /^["'`]$/m,							// Strings Regex
 		decReg = /^let|const|var|for|while|if|else|in$/,		// Declarations Regex
 		others = /^console|Error|try|catch|Math|Object|function|log$/,	// The final highlight
@@ -52,8 +61,6 @@ function highlight(code){
 			// Checking for a comment initializer.
 
 			if(code[char] === '/' && (code[char + 1]==='/' || code[char + 1]==='*')){
-				console.log('Comment : ',code[char],code[char+1]);
-
 				inComment.bool = true;
 				inComment.delim = code[char+1];
 				highlighted += "<span class='comment'>" + code[char].toString();
@@ -181,28 +188,58 @@ function highlight(code){
 		}	
 		else{
 			// If we are inside a comment.
+			try{
+				highlighted += code[char].toString();
 
-			highlighted += code[char].toString();
+				// Checking for a comment terminator.
 
-			// Checking for a comment terminator.
+				if(inComment.delim === '/'){
+					if(code[char] === '\n'){
+						// End of comment.
 
-			if(inComment.delim === '/'){
-				if(code[char] === '\n'){
-					// End of comment.
-
-					highlighted += "</span>";
-					inComment.bool = false;
+						highlighted += "</span>";
+						inComment.bool = false;
+					}
+				}
+				else if(inComment.delim === '*'){
+					if(code[char] === '/' && code[char - 1] === '*'){
+						inComment.bool = false;
+						highlighted += "</span>";
+					}
 				}
 			}
-			else if(inComment.delim === '*'){
-				if(code[char] === '/' && code[char - 1] === '*'){
-					inComment.bool = false;
-					highlighted += "</span>";
-				}
+			catch(e){
+				throw new Error(e);
 			}
 		}
 	}
-		
 
 	return highlighted;
+}
+
+// Function for highlighting syntax of nodes on webpages.
+// Takes a node identifier (.node, #node, tag) as an argument.
+// Replaces the inner HTML of the nodes with the highlighted HTML.
+
+function nodeHighlighter(node = ""){
+	// Get the node.
+
+	if(typeof node != "string"){
+		throw new Error("Invalid Type of argument.");
+	}
+
+	let nodeList = document.querySelectorAll(node);
+
+	for(let i = 0; i < nodeList.length; i++){
+		try{
+			let nodeCode = nodeList[i].innerText;	// The text inside the node.
+
+			nodeList[i].innerHTML = "<pre class='minilightcode'>\n"+highlight(nodeCode)+"\n</pre>";
+		}
+		catch(e){
+			throw new Error(e);
+		}
+	}
+
+	return
 }

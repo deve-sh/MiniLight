@@ -39,18 +39,12 @@
 	<script type="text/javascript" src="index.js"></script>
 	<script type="text/javascript">
 		document.getElementById('yo').innerHTML = highlight(
-`// Comment 1
+`/*
+	Comment 1.
+*/
 
-'use strict';
-
-let x1 = 5;
-let y = 62;
-console.log(typeof y);
-const str = \`'I am a string1.'\`;
-var str1 = "I am a string too."
-y++;
-const m = Object.freeze(m);
-			`
+let m = 5.4;	// Comment 2
+`
 			);
 	</script>
 </body>
