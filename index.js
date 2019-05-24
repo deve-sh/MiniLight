@@ -11,10 +11,23 @@
 // Takes code as a string in its parameters.
 // Returns an HTML string with highlighted code.
 
+// ---------------------
+// Process
+// ---------------------
+// Take a string as code.
+// Iterate to it character by character.
+// Check if the character set is a comment initiator. If yes, ignore all highlighting until the comment does not end.
+// If not, then check if the character is a string initiator. If yes, ignore all highlighting until the string doen't end.
+// Check for appropriate symbols, keywords and numbers and highlight them.
+// Return the highlighted code.
+// --------
+
 function highlight(code = ""){
 	if(typeof code != "string"){
 		throw new Error("Invalid type for code.");
 	}
+
+	// Required Variables
 
 	let highlighted = ``,
 		alphaReg = /[A-Z]/i 					// Alphabets Regex
@@ -24,13 +37,6 @@ function highlight(code = ""){
 		decReg = /^let|const|var|for|while|if|else|in$/,		// Declarations Regex
 		others = /^console|Error|try|catch|Math|Object|function|log$/,	// The final highlight
 		opeReg = /^default|delete|typeof|string$/
-
-	// First step.
-	// Finding out the strings inside the Code.
-
-	// Strings are defined using " ", ' ' and ` `.
-	// So if we are inside a string, we don't need syntax highlighting.
-	// However, if we are outside a string. Things need to be highlighted.
 
 	// Object to keep track of whether we are in a string.
 
@@ -234,6 +240,8 @@ function nodeHighlighter(node = ""){
 		try{
 			let nodeCode = nodeList[i].innerText;	// The text inside the node.
 
+			// Get the highlighted version of code inside the node and set the Inner HTML of the node to it.
+			
 			nodeList[i].innerHTML = "<pre class='minilightcode'>\n"+highlight(nodeCode)+"\n</pre>";
 		}
 		catch(e){
