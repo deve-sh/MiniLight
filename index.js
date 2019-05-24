@@ -30,12 +30,12 @@ function highlight(code = ""){
 	// Required Variables
 
 	let highlighted = ``,
-		alphaReg = /[A-Z]/i 					// Alphabets Regex
+		alphaReg = /[A-Z]/i,					// Alphabets Regex
 		numReg = /\d+/mi,						// Numbers Regex
 		symReg = /[=\/+,*.:-]+/mi,					// Symbols Regex
 		strReg = /^["'`]$/m,							// Strings Regex
-		decReg = /^let|const|var|for|while|if|else|in$/,		// Declarations Regex
-		others = /^console|Error|try|catch|Math|Object|function|log$/,	// The final highlight
+		decReg = /^let|const|var|for|while|if|else|in$/,		// Keyword Regex
+		others = /^console|Error|try|catch|Math|Object|function|log$/,	// Other Keyword Regex
 		opeReg = /^default|delete|typeof|string$/
 
 	// Object to keep track of whether we are in a string.
@@ -135,7 +135,7 @@ function highlight(code = ""){
 							// Now evaluating if the word we have with us is a keyword.
 
 							if(decReg.test(current.word)){
-								highlighted += `<span class='declerator'>${current.word}</span>`;
+								highlighted += `<span class='keyword'>${current.word}</span>`;
 							}
 							else if(others.test(current.word)){
 								highlighted += `<span class='othkeywords'>${current.word}</span>`	
