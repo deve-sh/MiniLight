@@ -1,3 +1,55 @@
 /*
 	CSS File for MiniLight (Mini Syntax Highlighter)
+	
+	Author : Devesh Kumar
+	
+	Edit this in or create new themes if you want to.
+	
+	This follows the sublime text Mariana Theme.
 */
+
+/* Container */
+
+.minilightcode{
+	box-sizing: border-box;
+	background: #343d46;
+	color: #ffffff;
+	padding: 1rem;
+	max-width: 100%;
+}
+
+/* Keywords */
+
+.keyword{
+	color: #c695c6;
+}
+
+/* Other Keywords */
+
+.othkeywords{
+	color : #6699cc;
+}
+
+/* Operators/Symbols and Numbers */
+
+.operator, .symbol, .number{
+	color : #f97b57;
+}
+
+/* Quotes */
+
+.quotes{
+	color : #60b4b4;
+}
+
+/* String */
+
+.string{
+	color : #99c794;
+}
+
+/* Comments */
+
+.comment{
+	color : #a6acb9;
+}
