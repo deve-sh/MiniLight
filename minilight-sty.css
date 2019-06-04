@@ -60,3 +60,9 @@
 .comment{
 	color : #a6acb9;
 }
+
+/* Function Names / Declared Variables */
+
+.declaredvar{
+	color: #60b4b4;
+}

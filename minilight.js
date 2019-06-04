@@ -36,7 +36,8 @@ function highlight(code = ""){
 		strReg = /^["'`]$/m,							// Strings Regex
 		decReg = /^let$|^const$|^var$|^for$|^do$|^while$|^if$|^else$|^in$|^throw$|^new$/,		// Keyword Regex
 		others = /^console$|^Error$|^try$|^catch$|^Math$|^Object$|^function$|^log$|^Error$/,	// Other Keyword Regex
-		opeReg = /^default$|^delete$|^typeof$|^string$/
+		opeReg = /^default$|^delete$|^typeof$|^string$/,
+		specReg = /^function$|^typeof$|^def$/
 
 	// Object to keep track of whether we are in a string.
 
@@ -50,7 +51,8 @@ function highlight(code = ""){
 
 	let current = {		
 		inWord : false,
-		word : ``
+		word : ``,
+		prevWord : ``
 	}
 
 	// Object to keep track of position in a comment.
@@ -94,6 +96,7 @@ function highlight(code = ""){
 							// Setting the state current.inWord to true.
 
 							current.inWord = true;
+
 							current.word += code[char].toString();
 						}
 						else{
@@ -143,11 +146,16 @@ function highlight(code = ""){
 							else if(opeReg.test(current.word)){
 								highlighted += `<span class='operator'>${current.word}</span>`;
 							}
+							else if(specReg.test(current.prevWord)){
+								highlighted += `<span class='declaredvar'>${current.word}</span>`;
+							}
 							else{
 								highlighted += `${current.word}`;
 							}
 
-							// Setting current.word to empty.
+							// Setting current.word to empty and current.prevWord to current word.
+
+							current.prevWord = current.word;
 
 							current.word = ``;
 
