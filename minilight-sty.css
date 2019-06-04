@@ -16,6 +16,7 @@
 	color: #ffffff;
 	padding: 1rem;
 	max-width: 100%;
+	overflow: auto;
 	border-radius: 0.2rem;
 }
 

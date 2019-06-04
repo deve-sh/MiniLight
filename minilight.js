@@ -34,10 +34,10 @@ function highlight(code = ""){
 		numReg = /\d+/mi,						// Numbers Regex
 		symReg = /[=\/+,*.:-]+/mi,					// Symbols Regex
 		strReg = /^["'`]$/m,							// Strings Regex
-		decReg = /^let$|^const$|^var$|^for$|^do$|^while$|^if$|^else$|^in$|^throw$|^new$/,		// Keyword Regex
+		decReg = /^let$|^const$|^var$|^for$|^do$|^return$|^while$|^if$|^else$|^in$|^throw$|^new$/,		// Keyword Regex
 		others = /^console$|^Error$|^try$|^catch$|^Math$|^Object$|^function$|^log$|^Error$/,	// Other Keyword Regex
 		opeReg = /^default$|^delete$|^typeof$|^string$/,
-		specReg = /^function$|^typeof$|^def$/
+		funcReg = /^function$|^def$/
 
 	// Object to keep track of whether we are in a string.
 
@@ -146,7 +146,7 @@ function highlight(code = ""){
 							else if(opeReg.test(current.word)){
 								highlighted += `<span class='operator'>${current.word}</span>`;
 							}
-							else if(specReg.test(current.prevWord)){
+							else if(funcReg.test(current.prevWord)){
 								highlighted += `<span class='declaredvar'>${current.word}</span>`;
 							}
 							else{
